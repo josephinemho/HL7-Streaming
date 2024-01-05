@@ -23,7 +23,9 @@ import org.apache.spark.sql.functions._
 
 // MAGIC %md
 // MAGIC ## Load HL7 messages to a DataFrame _with streaming_
-// MAGIC Now let's read hl7 messages as a spark stream:
+// MAGIC **Now let's read hl7 messages as a spark stream:**
+// MAGIC
+// MAGIC Before we begin working on the data, let's take a look at the **schema** and **stream of messages** to understand our nested structure (expand `segments`). Now you can start streaming from systems like Kafka, Event Hub, Kinesis, etc. because you have access to all the connectors that Spark has access to. By working with Smolder, you get all the Spark goodness and enhanced performance that comes with using Spark as a wrapper. 
 
 // COMMAND ----------
 
@@ -47,15 +49,10 @@ display(
 // COMMAND ----------
 
 // MAGIC %md
-// MAGIC you can also read a single message
-
-// COMMAND ----------
-
-// MAGIC %md
 // MAGIC
 // MAGIC ## Define HL7 helper functions
 // MAGIC
-// MAGIC HL7 uses an interesting set of delimiters to split records. These are helper functions for working with HL7 messages. These should eventually move inside of Smolder.
+// MAGIC HL7 uses an interesting set of delimiters to split records. These are helper functions for working with HL7 messages. We can use helper functions to create our DataFrame of ADT Events.
 
 // COMMAND ----------
 
@@ -89,6 +86,11 @@ val adtEvents = message_stream.select(subfield(segmentField("PID", 4), 0).as("la
                                 subfield(segmentField("PV1", 2), 3).as("hospital"))
 
 adtEvents.createOrReplaceTempView("adt_events")
+
+// COMMAND ----------
+
+// MAGIC %md
+// MAGIC Now we can start writing live SQL queries on the data as it's coming in. So this is simulating a stream like one would have with Kafka. This displays a simple visualization of high utilizers by hospital. And we can inspect things like: records processed, batch size, etc.
 
 // COMMAND ----------
 
