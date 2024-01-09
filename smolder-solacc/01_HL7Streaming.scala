@@ -212,6 +212,26 @@ val query = adtEvents
             .trigger(Trigger.ProcessingTime("5 seconds"))
             .foreachBatch { (batchDF: DataFrame, batchId: Long) =>
               batchDF.write.format("delta").mode("append")
+                     .saveAsTable("hl7_adt_stream")
+            }
+            .start()
+Thread.sleep(120000)
+
+// COMMAND ----------
+
+// DBTITLE 1,Trigger set to 5 seconds (near real-time), so you can see the refresh
+import org.apache.spark.sql.streaming.Trigger
+import org.apache.spark.sql.DataFrame
+
+val query = adtEvents
+            .writeStream
+            .outputMode("append")
+            .format("delta")
+            .option("mergeSchema", "true")
+            .option("checkpointLocation", checkpoint_path)
+            .trigger(Trigger.ProcessingTime("5 seconds"))
+            .foreachBatch { (batchDF: DataFrame, batchId: Long) =>
+              batchDF.write.format("delta").mode("append")
                      .option("mergeSchema", "true")
                      .saveAsTable("hl7_adt_stream2")
             }
