@@ -34,7 +34,7 @@ import org.apache.spark.sql.functions._
 // COMMAND ----------
 
 // MAGIC %sql
-// MAGIC CREATE DATABASE IF NOT EXISTS jo_catalog.demos
+// MAGIC CREATE DATABASE IF NOT EXISTS josephine.hl7
 
 // COMMAND ----------
 
