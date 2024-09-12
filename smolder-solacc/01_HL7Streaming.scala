@@ -4,6 +4,15 @@
 
 // COMMAND ----------
 
+// MAGIC %python
+// MAGIC print("hi CSU LB")
+
+// COMMAND ----------
+
+sdfsdfdsf tsesrfesdf
+
+// COMMAND ----------
+
 // MAGIC %md
 // MAGIC # Smolder: A package for ingesting HL7 messages to Delta Lake
 // MAGIC
